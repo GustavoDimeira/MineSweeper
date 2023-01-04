@@ -1,0 +1,10 @@
+.line {
+  padding: 0px;
+  margin: 0px;
+}
+
+.cell {
+  margin: 0px;
+  padding: 0px;
+  border: 2px solid black;
+}
