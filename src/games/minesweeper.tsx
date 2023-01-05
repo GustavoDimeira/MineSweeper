@@ -4,23 +4,38 @@ import { MineSweeperClass } from './utilits/mineSweeper.funcs';
 import { CellInterface } from './utilits/mineSweeper.interfaces';
 import './mineSweeper.css';
 
-const { getCells, defineBombs, clickFunction, countBombs } = new MineSweeperClass();
+const {
+  getCells, defineBombs, clickFunction,
+  countBombsArround
+} = new MineSweeperClass();
 
 function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
   const [cellsState, changeCellsState] = useState<CellInterface[]>([]);
   const [numberline, numberlineState] = useState<number[]>([]);
 
+  // const [firstClick, changeFirstClick] = useState<boolean>(true);
+  const [loseTrigger, changeLose] = useState<boolean>(false);
+  const [isReseting, reset] = useState<boolean>(true);
+
+  console.log(loseTrigger);
+
   const hasClicked = (cell: CellInterface, i: number): void => {
-    const newCells = clickFunction(cell, i, cellsState);
+    const [newCells, trigger] = clickFunction(cell, i, cellsState, cells);
     changeCellsState(newCells);
+    changeLose(trigger);
   };
 
   useEffect((): void => {
-    const cellsArray: CellInterface[] = getCells(cells);
-    defineBombs(bombs, cellsArray);
-    changeCellsState(cellsArray);
-    countBombs(cellsArray[7], cellsArray, cells);
-  }, [bombs, cells]);
+    if (isReseting) {
+      reset(false);
+      const cellsArray: CellInterface[] = getCells(cells);
+      const cellsWithBombs: number[] = defineBombs(bombs, cellsArray);
+      cellsWithBombs.forEach((cell) => {
+        countBombsArround(cell, cellsArray, cells);
+      });
+      changeCellsState(cellsArray);
+    };
+  }, [bombs, cells, isReseting]);
 
   useEffect((): void => {
     const temp: number[] = []
@@ -42,16 +57,16 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
               {
                 cellsState.map((cell, i): ReactNode => {
                   return (
-                    x === Number(cell.positon.split('x')[0]) &&
-                    <img
-                      alt="none"
-                      src={ cell.img }
-                      width="50"
-                      height="50"
+                    x === Number(cell.position.split('x')[0]) &&
+                    <button
                       key={`${i}Cell`}
                       className={`cell ${cell.class}`}
                       onClick={() => hasClicked(cell, i)}
-                    />
+                      disabled={cell.isOpen}
+                    >
+                      {cell.hasBomb ? 'bomb' : !cell.bombsArround ? '.' : cell.bombsArround}
+                    </button>
+
                   )
                 })
               }
@@ -59,8 +74,14 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
           );
         })
       }
+      <button
+        onClick={() => reset(true)}
+      >
+        Reset
+      </button>
     </main>
   );
 }
 
 export default Minesweeper;
+
