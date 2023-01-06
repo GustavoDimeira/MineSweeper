@@ -3,7 +3,7 @@ import Minesweeper from './games/minesweeper.tsx';
 function App() {
   return (
     <div className="App">
-      <Minesweeper bombs={ 64 } cells={ 24 }/>
+      <Minesweeper bombs={ 12 } cells={ 8 }/>
     </div>
   );
 }

@@ -133,22 +133,8 @@ export class MineSweeperClass {
     arrayCells.splice(i, 1, {
       ...arrayCells[i],
       isOpen: true,
-      class: `${!arrayCells[i].hasBomb ? 'open' : 'explod'}`,
+      class: `${!arrayCells[i].hasBomb ? ((arrayCells[i].bombsArround === 0) ? 'open-empty' : 'open') : 'explod'}`,
       img: imgDirt[img],
     });
   };
 };
-
-/*
-        while (emptyAdd.length > 0) {
-          emptyAdd.forEach((newCell) => {
-            emptyAdd = [];
-            const newCells = this.getCellsArround(cellsState[newCell].position, cellsN);
-            const filterdCells = newCells.filter((n) => n >= 0);
-            const temp = [...filterdCells];
-            emptyAdd = temp.filter((cellI) => this.isEmptyCell(cellsState[cellI]) && !newArray.includes(cellI));
-            newArray = [...newArray, ...filterdCells].filter((x, i, a) => a.indexOf(x) === i);
-          });
-        }
-        console.log(newArray);
-*/

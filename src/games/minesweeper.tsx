@@ -13,7 +13,6 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
   const [cellsState, changeCellsState] = useState<CellInterface[]>([]);
   const [numberline, numberlineState] = useState<number[]>([]);
 
-  // const [firstClick, changeFirstClick] = useState<boolean>(true);
   const [loseTrigger, changeLose] = useState<boolean>(false);
   const [isReseting, reset] = useState<boolean>(true);
 
@@ -62,9 +61,20 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
                       key={`${i}Cell`}
                       className={`cell ${cell.class}`}
                       onClick={() => hasClicked(cell, i)}
+                      
                       disabled={cell.isOpen}
                     >
-                      {cell.hasBomb ? 'bomb' : !cell.bombsArround ? '.' : cell.bombsArround}
+                      <img
+                        height={ 45 }
+                        width={ 45 }
+                        alt="none"
+                        src={ cell.img }
+                      />
+                      <p>
+                        {
+                          cell.isOpen ? cell.bombsArround : ''
+                        }
+                      </p>
                     </button>
 
                   )

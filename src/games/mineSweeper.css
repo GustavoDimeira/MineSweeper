@@ -2,34 +2,39 @@
   text-align: center;
   padding: 0px;
   margin: 0px;
-  color: transparent;
 }
 
-main {
-  background-image: linear-gradient(to top left, rgb(0, 75, 11), rgb(65, 204, 0));
-  display: inline-block;
-};
-
 .line {
-  padding: 0px;
-  margin: 0px;
+  height: 49px;
 }
 
 .cell {
-  margin: 0px;
-  padding: 0px;
   border: 2px solid black;
-  height: 50px;
-  width: 50px;
+  display: inline-flex;
 }
 
-.cell.closed:hover {
-  border: 2px solid blue;
+.cell img {
+  position: relative;
 }
 
-.cellImg {
-  z-index: 1;
+.cell p {
+  font-weight: 700;
+  font-size: large;
   position: absolute;
-  width: 50px;
-  height: 50px;
-};
+}
+
+.explod {
+  color: transparent;
+}
+
+.open-empty {
+  color: transparent;
+}
+
+.open {
+  color: black;
+}
+
+.closed {
+  color: transparent;
+}
