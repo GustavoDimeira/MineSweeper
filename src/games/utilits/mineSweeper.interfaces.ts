@@ -7,4 +7,5 @@ export interface CellInterface {
   img: string,
   bombsArround: number,
   hasFlag: boolean,
+  firstClick: boolean,
 };

@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "lib": ["dom"],
     "jsx": "react",
     "target": "es2016",                                 
     "module": "commonjs",

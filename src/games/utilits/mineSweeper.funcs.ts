@@ -15,23 +15,33 @@ import dirt4 from './images/dirt4.png';
 import dirt5 from './images/dirt5.png';
 import dirt6 from './images/dirt6.png';
 
+import explosion2 from './images/explosion2.png';
+
 const imgGrass: string[] = [grass1, grass2, grass3, grass4, grass5, grass6];
 const imgDirt: string[] = [dirt1, dirt2, dirt3, dirt4, dirt5, dirt6];
 
 export class MineSweeperClass {
   // define what will happen after a click
-  clickFunction = (cell: CellInterface, i: number, cellsState: CellInterface[], cellsN: number): [CellInterface[], boolean] => {
+  public clickFunction = (cell: CellInterface, cellsState: CellInterface[], cellsN: number, e: React.MouseEvent): [CellInterface[], boolean] => {
     const arrayCells = [...cellsState];
-    if (cell.bombsArround === 0 && cell.hasBomb === false) {
-      this.getConnected(arrayCells, cellsN, i);
-    } else {
-      this.openCell(i, arrayCells);
+    const i: number = Number(cell.position.split('x')[0])*cellsN + Number(cell.position.split('x')[1]);
+    if (e.type === 'click') {
+      if (cell.bombsArround === 0 && cell.hasBomb === false) {
+        this.getConnected(arrayCells, cellsN, i);
+      } else {
+        this.openCell(i, arrayCells);
+      };
+      return [arrayCells, cell.hasBomb];
     };
-    return [arrayCells, cell.hasBomb];
+    arrayCells.splice(i, 1, {
+      ...arrayCells[i],
+      hasFlag: cell.isOpen ? false : !arrayCells[i].hasFlag,
+    });
+    return [arrayCells, false];
   };
 
   // create the object cells
-  getCells = (cells: number): CellInterface[] => {
+  public getCells = (cells: number, isFirstClick: boolean = true): CellInterface[] => {
     let finalArray: CellInterface[] = [];
     for (let i = 0; i < cells; i++) {
       for (let x = 0; x < cells; x++) {
@@ -42,11 +52,12 @@ export class MineSweeperClass {
             position: `${i}x${x}`,
             isOpen: false,
             class: 'closed',
-            img: imgGrass[img],
+            img: imgGrass[0],
             hasBomb: false,
             bombsArround: 0,
             connectadeWith: null,
             hasFlag: false,
+            firstClick: isFirstClick,
           },
         ];
       };
@@ -54,15 +65,23 @@ export class MineSweeperClass {
     return finalArray;
   };
 
-  // set where the bombs are gonna be, it returns an array of values from 1 up to the last cell number (in order use it to find farray positions, is recomendade to remove 1 from each number)
-  defineBombs = (
+  // set where the bombs are gonna be, it returns an array of values from 1 up to the last cell number
+  public defineBombs = (
     bombs: number,
-    cellsArray: CellInterface[]
+    cellsArray: CellInterface[],
+    firstClick: string,
   ): number[] => {
+    const cellsN = Math.sqrt(cellsArray.length);
+    let invalidPos: number[] = [
+      ...this.getCellsArround(firstClick, cellsN),
+      Number(firstClick.split('x')[0]) * cellsN + Number(firstClick.split('x')[1]),
+    ];
     let bombsPositons: number[] = [];
     while (bombsPositons.length < bombs) {
-      const addBomb: number = Math.floor((Math.random() * (cellsArray.length)));
-      (bombsPositons.find((positon) => positon === addBomb) === undefined) && bombsPositons.push(addBomb);
+      const newBomb: number = Math.floor((Math.random() * (cellsArray.length)));
+      let isNotIncluded = (bombsPositons.find((p) => p === newBomb) === undefined);
+      let isInvalid = (invalidPos.find((p) => p === newBomb) === undefined);
+      (isNotIncluded && isInvalid) && bombsPositons.push(newBomb);
     }
     bombsPositons.forEach((positon) => {
       cellsArray.splice(positon, 1, {
@@ -73,8 +92,9 @@ export class MineSweeperClass {
     return bombsPositons;
   };
 
-  countBombsArround = (cellIndex: number, cellsState: CellInterface[], cellsAmount: number): void => {
-    const cells = this.getCellsArround(cellsState[cellIndex].position, cellsAmount);
+  public countBombsArround = (cellIndex: number, cellsState: CellInterface[]): void => {
+    const cellsN: number = Math.sqrt(cellsState.length);
+    const cells: number[] = this.getCellsArround(cellsState[cellIndex].position, cellsN);
     cells.forEach((cellI) => {
       cellI !== -1 && cellsState.splice(cellI, 1, {
         ...cellsState[cellI],
@@ -83,7 +103,25 @@ export class MineSweeperClass {
     });
   };
 
-  getConnected = (cellsState: CellInterface[], cellsN: number, i: number) => {
+  public getCellsArround = (position: string, cellsN: number): number[] => {
+    const pos1 = Number(position.split('x')[0]);
+    const pos2 = Number(position.split('x')[1]);
+
+    let key1 = (pos1 !== 0 && pos2 !== 0) ? (pos1 - 1) * cellsN + pos2 - 1 : -1;
+    let key2 = (pos1 !== 0) ? (pos1 - 1) * cellsN + pos2 : -1;
+    let key3 = (pos1 !== 0 && pos2 !== cellsN - 1) ? (pos1 - 1) * cellsN + pos2 + 1 : -1;
+    let key4 = (pos2 !== 0) ? (pos1) * cellsN + pos2 - 1 : -1;
+    let key6 = (pos2 !== cellsN - 1) ? (pos1) * cellsN + pos2 + 1 : -1;
+    let key7 = (pos1 !== cellsN - 1 && pos2 !== 0) ? (pos1 + 1) * cellsN + pos2 - 1 : -1;
+    let key8 = (pos1 !== cellsN - 1) ? (pos1 + 1) * cellsN + pos2 : -1;
+    let key9 = (pos1 !== cellsN - 1 && pos2 !== cellsN - 1) ? (pos1 + 1) * cellsN + pos2 + 1 : -1;
+
+    return [key1, key2, key3, key4, key6, key7, key8, key9];
+  };
+
+  //utilits
+
+  private getConnected = (cellsState: CellInterface[], cellsN: number, i: number) => {
     const allEmptyCells: number[] = []
     cellsState.forEach((cell, i) => {
       this.isEmptyCell(cell) && allEmptyCells.push(i);
@@ -107,34 +145,21 @@ export class MineSweeperClass {
     });
   };
 
-  //utilits
-  getCellsArround = (position: string, cellsN: number): number[] => {
-    const pos1 = Number(position.split('x')[0]);
-    const pos2 = Number(position.split('x')[1]);
-
-    let key1 = (pos1 !== 0 && pos2 !== 0) ? (pos1 - 1) * cellsN + pos2 - 1 : -1;
-    let key2 = (pos1 !== 0) ? (pos1 - 1) * cellsN + pos2 : -1;
-    let key3 = (pos1 !== 0 && pos2 !== cellsN - 1) ? (pos1 - 1) * cellsN + pos2 + 1 : -1;
-    let key4 = (pos2 !== 0) ? (pos1) * cellsN + pos2 - 1 : -1;
-    let key6 = (pos2 !== cellsN - 1) ? (pos1) * cellsN + pos2 + 1 : -1;
-    let key7 = (pos1 !== cellsN - 1 && pos2 !== 0) ? (pos1 + 1) * cellsN + pos2 - 1 : -1;
-    let key8 = (pos1 !== cellsN - 1) ? (pos1 + 1) * cellsN + pos2 : -1;
-    let key9 = (pos1 !== cellsN - 1 && pos2 !== cellsN - 1) ? (pos1 + 1) * cellsN + pos2 + 1 : -1;
-
-    return [key1, key2, key3, key4, key6, key7, key8, key9];
-  };
-
-  isEmptyCell = (cell: CellInterface): boolean => {
+  private isEmptyCell = (cell: CellInterface): boolean => {
     return cell.connectadeWith === null && !cell.hasBomb && cell.bombsArround === 0
   };
 
-  openCell = (i: number, arrayCells: CellInterface[]) => {
-    const img: number = Math.floor(Math.random() * 6)
-    arrayCells.splice(i, 1, {
-      ...arrayCells[i],
-      isOpen: true,
-      class: `${!arrayCells[i].hasBomb ? ((arrayCells[i].bombsArround === 0) ? 'open-empty' : 'open') : 'explod'}`,
-      img: imgDirt[img],
-    });
+  private openCell = (i: number, arrayCells: CellInterface[]): void => {
+    const img: number = Math.floor(Math.random() * 6);
+    const cell: CellInterface = arrayCells[i];
+    if (!cell.isOpen && !cell.hasFlag) {
+      arrayCells.splice(i, 1, { 
+        ...cell,
+        isOpen: true,
+        hasFlag: false,
+        class: `${!cell.hasBomb ? ((cell.bombsArround) ? 'open' : 'open-empty') : 'explod'}`,
+        img: cell.hasBomb ? explosion2 : imgDirt[1],
+      });
+    }
   };
 };
