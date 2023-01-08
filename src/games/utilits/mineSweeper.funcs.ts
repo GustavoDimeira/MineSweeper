@@ -22,22 +22,23 @@ const imgDirt: string[] = [dirt1, dirt2, dirt3, dirt4, dirt5, dirt6];
 
 export class MineSweeperClass {
   // define what will happen after a click
-  public clickFunction = (cell: CellInterface, cellsState: CellInterface[], cellsN: number, e: React.MouseEvent): [CellInterface[], boolean] => {
+  public clickFunction = (cell: CellInterface, cellsState: CellInterface[], cellsN: number, e: React.MouseEvent, openCells: number): [CellInterface[], string | false, number] => {
+    let cellsOpen: number;
     const arrayCells = [...cellsState];
     const i: number = Number(cell.position.split('x')[0])*cellsN + Number(cell.position.split('x')[1]);
     if (e.type === 'click') {
       if (cell.bombsArround === 0 && cell.hasBomb === false) {
-        this.getConnected(arrayCells, cellsN, i);
+        cellsOpen = this.openConnectds(arrayCells, cellsN, i, openCells);
       } else {
-        this.openCell(i, arrayCells);
+        cellsOpen = this.openCell(i, arrayCells, false, openCells) as number;
       };
-      return [arrayCells, cell.hasBomb];
+      return [arrayCells, cell.hasBomb && "lose", cellsOpen];
     };
     arrayCells.splice(i, 1, {
       ...arrayCells[i],
       hasFlag: cell.isOpen ? false : !arrayCells[i].hasFlag,
     });
-    return [arrayCells, false];
+    return [arrayCells, false, openCells];
   };
 
   // create the object cells
@@ -45,7 +46,7 @@ export class MineSweeperClass {
     let finalArray: CellInterface[] = [];
     for (let i = 0; i < cells; i++) {
       for (let x = 0; x < cells; x++) {
-        const img: number = Math.floor(Math.random() * 6)
+        // const img: number = Math.floor(Math.random() * 6)
         finalArray = [
           ...finalArray,
           {
@@ -121,7 +122,7 @@ export class MineSweeperClass {
 
   //utilits
 
-  private getConnected = (cellsState: CellInterface[], cellsN: number, i: number) => {
+  private openConnectds = (cellsState: CellInterface[], cellsN: number, i: number, openCells: number): number => {
     const allEmptyCells: number[] = []
     cellsState.forEach((cell, i) => {
       this.isEmptyCell(cell) && allEmptyCells.push(i);
@@ -140,19 +141,21 @@ export class MineSweeperClass {
         }
       });
     };
+    openCells = openCells + newArray.length;
     newArray.forEach((index) => {
-      this.openCell(index, cellsState);
+      this.openCell(index, cellsState, true);
     });
+    return openCells;
   };
 
   private isEmptyCell = (cell: CellInterface): boolean => {
     return cell.connectadeWith === null && !cell.hasBomb && cell.bombsArround === 0
   };
 
-  private openCell = (i: number, arrayCells: CellInterface[]): void => {
-    const img: number = Math.floor(Math.random() * 6);
+  private openCell = (i: number, arrayCells: CellInterface[], openFlags: boolean, cellsOpen?: number): number | void => {
+    // const img: number = Math.floor(Math.random() * 6);
     const cell: CellInterface = arrayCells[i];
-    if (!cell.isOpen && !cell.hasFlag) {
+    if (!cell.isOpen && ((!cell.hasFlag) || openFlags)) {
       arrayCells.splice(i, 1, { 
         ...cell,
         isOpen: true,
@@ -160,6 +163,9 @@ export class MineSweeperClass {
         class: `${!cell.hasBomb ? ((cell.bombsArround) ? 'open' : 'open-empty') : 'explod'}`,
         img: cell.hasBomb ? explosion2 : imgDirt[1],
       });
+    }
+    if (cellsOpen) {
+      return cellsOpen + (cell.hasBomb ? 0 : 1);
     }
   };
 };

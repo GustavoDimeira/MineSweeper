@@ -2,27 +2,25 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 import { MineSweeperClass } from './utilits/mineSweeper.funcs';
 import { CellInterface } from './utilits/mineSweeper.interfaces';
-import './mineSweeper.css';
+import './mineSweeperBoard.css';
 
 const {
   getCells, defineBombs, clickFunction,
   countBombsArround
 } = new MineSweeperClass();
 
-function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
+function Board({ cells, bombs, isRunning, loste, win, isResetinga }: { cells: number, bombs: number, isRunning: Function, loste: Function, win: Function, isResetinga: boolean }) {
   const [cellsSize, changeSize] = useState<number>(25);
 
   const [cellsState, changeCellsState] = useState<CellInterface[]>([]);
+  const [openCount, changeCount] = useState<number>(0);
   const [numberline, numberlineState] = useState<number[]>([]);
 
-  const [loseTrigger, changeLose] = useState<boolean>(false);
   const [isReseting, reset] = useState<boolean>(true);
 
-  console.log(loseTrigger)
-
-  useEffect(() => {
-    console.log(cellsSize);
-  }, [cellsSize])
+  if (isResetinga) {
+    //reset(!);
+  };
 
   // change the cells size based on the screen smaller size
   useEffect(() => {
@@ -47,6 +45,7 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
   
   // click function
   const hasClicked = (cell: CellInterface, e: React.MouseEvent): void => {
+    let cellsOpen = openCount + 0;
     let cellsArray: CellInterface[] | undefined= undefined;
     if (cell.firstClick) {
       cellsArray = getCells(cells, false);
@@ -55,17 +54,26 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
         countBombsArround(cell, cellsArray as CellInterface[]);
       });
       changeCellsState(cellsArray);
+      isRunning(true);
     };
-    const [newCells, trigger] = clickFunction(cell, cellsArray ? cellsArray : cellsState, cells, e);
+    const [newCells, trigger, openCells] = clickFunction(cell, cellsArray ? cellsArray : cellsState, cells, e, cellsOpen);
     changeCellsState(newCells);
-    trigger && changeLose(trigger);
+    changeCount(openCells);
+    if (openCells === cells ** 2 - bombs) {
+      isRunning(false);
+      win(true);
+    } else if (trigger === "lose") {
+      isRunning(false);
+      loste(true);
+    } 
   };
 
   // set initials cells
   useEffect((): void => {
     const cellsArray: CellInterface[] = getCells(cells);
     changeCellsState(cellsArray);
-  }, [bombs, cells, isReseting]);
+    isRunning(false);
+  }, [bombs, cells, isReseting, isRunning]);
 
   // define the number of rolls
   useEffect((): void => {
@@ -126,5 +134,5 @@ function Minesweeper({ cells, bombs }: { cells: number, bombs: number }) {
   );
 }
 
-export default Minesweeper;
+export default Board;
 

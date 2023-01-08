@@ -1,9 +1,9 @@
-import Minesweeper from './games/minesweeper.tsx';
+import Minesweeper from './games/mineSweeperHeader';
 
 function App() {
   return (
     <div className="App">
-      <Minesweeper bombs={ 48 } cells={ 16 }/>
+      <Minesweeper/>
     </div>
   );
 }
