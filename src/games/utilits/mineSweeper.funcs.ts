@@ -1,44 +1,26 @@
 /* eslint-disable no-loop-func */
 import { CellInterface } from "./mineSweeper.interfaces";
 
-import grass1 from './images/grass1.png';
-import grass2 from './images/grass2.png';
-import grass3 from './images/grass3.png';
-import grass4 from './images/grass4.png';
-import grass5 from './images/grass5.png';
-import grass6 from './images/grass6.png';
-
-import dirt1 from './images/dirt1.png';
-import dirt2 from './images/dirt2.png';
-import dirt3 from './images/dirt3.png';
-import dirt4 from './images/dirt4.png';
-import dirt5 from './images/dirt5.png';
-import dirt6 from './images/dirt6.png';
-
 import explosion2 from './images/explosion2.png';
-
-const imgGrass: string[] = [grass1, grass2, grass3, grass4, grass5, grass6];
-const imgDirt: string[] = [dirt1, dirt2, dirt3, dirt4, dirt5, dirt6];
 
 export class MineSweeperClass {
   // define what will happen after a click
-  public clickFunction = (cell: CellInterface, cellsState: CellInterface[], cellsN: number, e: React.MouseEvent, openCells: number): [CellInterface[], string | false, number] => {
-    let cellsOpen: number;
+  public clickFunction = (cell: CellInterface, cellsState: CellInterface[], cellsN: number, e: React.MouseEvent): [CellInterface[], string | false] => {
     const arrayCells = [...cellsState];
     const i: number = Number(cell.position.split('x')[0])*cellsN + Number(cell.position.split('x')[1]);
     if (e.type === 'click') {
       if (cell.bombsArround === 0 && cell.hasBomb === false) {
-        cellsOpen = this.openConnectds(arrayCells, cellsN, i, openCells);
+        this.openConnectds(arrayCells, cellsN, i);
       } else {
-        cellsOpen = this.openCell(i, arrayCells, false, openCells) as number;
+        this.openCell(i, arrayCells, false);
       };
-      return [arrayCells, cell.hasBomb && "lose", cellsOpen];
+      return [arrayCells, cell.hasBomb && "lose"];
     };
     arrayCells.splice(i, 1, {
       ...arrayCells[i],
       hasFlag: cell.isOpen ? false : !arrayCells[i].hasFlag,
     });
-    return [arrayCells, false, openCells];
+    return [arrayCells, false];
   };
 
   // create the object cells
@@ -46,14 +28,13 @@ export class MineSweeperClass {
     let finalArray: CellInterface[] = [];
     for (let i = 0; i < cells; i++) {
       for (let x = 0; x < cells; x++) {
-        // const img: number = Math.floor(Math.random() * 6)
         finalArray = [
           ...finalArray,
           {
             position: `${i}x${x}`,
             isOpen: false,
             class: 'closed',
-            img: imgGrass[0],
+            img: explosion2,
             hasBomb: false,
             bombsArround: 0,
             connectadeWith: null,
@@ -122,7 +103,7 @@ export class MineSweeperClass {
 
   //utilits
 
-  private openConnectds = (cellsState: CellInterface[], cellsN: number, i: number, openCells: number): number => {
+  private openConnectds = (cellsState: CellInterface[], cellsN: number, i: number): void => {
     const allEmptyCells: number[] = []
     cellsState.forEach((cell, i) => {
       this.isEmptyCell(cell) && allEmptyCells.push(i);
@@ -141,19 +122,16 @@ export class MineSweeperClass {
         }
       });
     };
-    openCells = openCells + newArray.length;
     newArray.forEach((index) => {
       this.openCell(index, cellsState, true);
     });
-    return openCells;
   };
 
   private isEmptyCell = (cell: CellInterface): boolean => {
     return cell.connectadeWith === null && !cell.hasBomb && cell.bombsArround === 0
   };
 
-  private openCell = (i: number, arrayCells: CellInterface[], openFlags: boolean, cellsOpen?: number): number | void => {
-    // const img: number = Math.floor(Math.random() * 6);
+  private openCell = (i: number, arrayCells: CellInterface[], openFlags: boolean): void => {
     const cell: CellInterface = arrayCells[i];
     if (!cell.isOpen && ((!cell.hasFlag) || openFlags)) {
       arrayCells.splice(i, 1, { 
@@ -161,11 +139,7 @@ export class MineSweeperClass {
         isOpen: true,
         hasFlag: false,
         class: `${!cell.hasBomb ? ((cell.bombsArround) ? 'open' : 'open-empty') : 'explod'}`,
-        img: cell.hasBomb ? explosion2 : imgDirt[1],
       });
-    }
-    if (cellsOpen) {
-      return cellsOpen + (cell.hasBomb ? 0 : 1);
     }
   };
 };

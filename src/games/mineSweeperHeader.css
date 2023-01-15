@@ -1,0 +1,117 @@
+* {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 8px;
+  padding-bottom: 14px;
+  width: 85%;
+
+  background-color: #949aa7;
+
+  box-shadow: 7px 7px 1px black inset;
+  box-shadow: 7px 7px 15px black;
+  border: black solid 12px;
+  border-bottom: 0px;
+}
+
+.restart, .timer, .leaderBoard {
+  background-color: rgb(26, 62, 104);
+  border: solid 3px black;
+  border-radius: 8%;
+  color: white;
+  font-weight: bolder;
+}
+
+.leaderBoard {
+  padding: 2px;
+  margin-left: 2%;
+}
+
+.timer {
+  padding: 2px;
+  margin-right: 8%;
+}
+
+.text {
+  font-weight: bolder;
+  color: white;
+}
+
+.emoji {
+  margin-right: 15px;
+  margin-left: 15px;
+  font-size: xx-large;
+}
+
+.endGame {
+  font-size: 60px;
+  position: absolute;
+  z-index: 2;
+}
+
+.win {
+  padding: 5px;
+  background-image: linear-gradient(to bottom right, rgb(0, 255, 13), rgb(44, 107, 104));
+  
+  border-radius: 15% 40%;
+  border: solid rgb(0, 0, 0) 4px;
+  box-shadow: 7px 7px 1px rgb(0, 255, 21) inset;
+  box-shadow: 7px 7px 15px rgb(0, 255, 21);
+}
+
+.lost {
+  padding: 5px;
+  background-image: linear-gradient(to bottom right, rgb(24, 20, 20), rgb(168, 31, 31));
+
+  border-radius: 15% 40%;
+  border: solid rgb(0, 0, 0) 4px;
+  box-shadow: 7px 7px 1px rgb(255, 0, 0) inset;
+  box-shadow: 7px 7px 15px rgb(255, 0, 0);
+}
+
+.lost, .win {
+  -webkit-animation:2s ease 0s normal forwards 3 fadein;
+  animation:2s ease 0s normal forwards 3 fadein;
+  }
+  
+  @keyframes fadein{from{opacity:0}
+  to{opacity:0.96}
+  }
+  
+  @-webkit-keyframes fadein{from{opacity:0}
+  to{opacity:0.96}
+  }
+  
+
+@media only screen and (min-width: 551px) {
+  .header {
+    width: 65%;
+    font-family:'Times New Roman', Times, serif
+  }
+
+  .endGame {
+    font-size: 75px;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .header {
+    width: 35%;
+  }
+
+  .endGame {
+    font-size: 90px;
+  }
+}
