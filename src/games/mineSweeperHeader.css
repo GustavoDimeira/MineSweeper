@@ -107,10 +107,6 @@
 }
 
 @media only screen and (min-width: 700px) {
-  .header {
-    width: 35%;
-  }
-
   .endGame {
     font-size: 90px;
   }

@@ -15,6 +15,29 @@ function MineSweeper() {
   const [timerString, updateTimerString] = useState<string>("0:0");
   const [winList, changeWinList] = useState<number[]>([]);
 
+  const [headerWidth, changeWidth] = useState<string>("0");
+
+  const reSize = () => {
+    const { width }: { width: number } = window.screen;
+    let percentage: number = 0
+    if (width < 401) {
+      percentage = 0.85;
+    } else if (width < 551) {
+      percentage = 0.85;
+    } else if (width < 751) {
+      percentage = 0.65;
+    } else {
+      percentage = 0.40;
+    };
+    changeWidth((width * percentage).toString());
+  }
+
+  // change the cells size based on the screen width
+  useEffect(() => {
+    window.addEventListener("resize", reSize);
+    reSize();
+  }, []);
+
   const restart = () => {
     changeLose(false);
     changeWin(false);
@@ -46,26 +69,28 @@ function MineSweeper() {
 
   return (
     <main className="game">
-      <div className="header">
-        <select
-          defaultValue={"LeaderBoard"}
-          className={"leaderBoard"}
-        >
-          <option
-            key={-1}
+      <div className="header" style={{ "width": `${headerWidth}px` }}>
+        <div>
+          <select
+            defaultValue={"LeaderBoard"}
+            className={"leaderBoard"}
           >
-            Leader Board
-          </option>
-          {winList.map((time, i): ReactNode => {
-            return (
-              <option
-                key={i}
-              >
-                {`${(time / 10).toString().split(".")[0]}:${(time / 10).toString().split(".")[1] ? Math.round((time / 10)).toString().split(".")[1] : 0}`}
-              </option>
-            )
-          })}
-        </select>
+            <option
+              key={-1}
+            >
+              Leader Board
+            </option>
+            {winList.map((time, i): ReactNode => {
+              return (
+                <option
+                  key={i}
+                >
+                  {`${(time / 10).toString().split(".")[0]}:${(time / 10).toString().split(".")[1] ? Math.round((time / 10)).toString().split(".")[1] : 0}`}
+                </option>
+              )
+            })}
+          </select>
+        </div>
         <button
           onClick={restart}
           className="restart"
@@ -85,10 +110,14 @@ function MineSweeper() {
         className={`endGame ${haswin ? "win" : "lost"}`}
       >
         {
-          haswin ? "You Win!" : hasLoste && "You Lose"
+          haswin ? (
+            <div>
+              "You Win!"
+            </div>
+          ) : hasLoste && "You Lose"
         }
       </div>}
-      <Board bombs={54} cells={8} isRunning={startAndStop} lose={changeLose} win={changeWin} isReseting={isResetarting} triggers={[haswin, hasLoste]} />
+      <Board bombs={4} cells={8} isRunning={startAndStop} lose={changeLose} win={changeWin} isReseting={isResetarting} triggers={[haswin, hasLoste]} />
     </main>
   );
 }

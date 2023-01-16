@@ -9,17 +9,21 @@ export class MineSweeperClass {
     const arrayCells = [...cellsState];
     const i: number = Number(cell.position.split('x')[0])*cellsN + Number(cell.position.split('x')[1]);
     if (e.type === 'click') {
-      if (cell.bombsArround === 0 && cell.hasBomb === false) {
-        this.openConnectds(arrayCells, cellsN, i);
-      } else {
-        this.openCell(i, arrayCells, false);
-      };
-      return [arrayCells, cell.hasBomb && "lose"];
+      if (!cell.hasFlag) {
+        if (cell.bombsArround === 0 && cell.hasBomb === false) {
+          this.openConnectds(arrayCells, cellsN, i);
+        } else {
+          this.openCell(i, arrayCells, false);
+        };
+        return [arrayCells, cell.hasBomb && "lose"];
+      }
+    } else {
+      arrayCells.splice(i, 1, {
+        ...arrayCells[i],
+        hasFlag: cell.isOpen ? false : !arrayCells[i].hasFlag,
+      });
     };
-    arrayCells.splice(i, 1, {
-      ...arrayCells[i],
-      hasFlag: cell.isOpen ? false : !arrayCells[i].hasFlag,
-    });
+
     return [arrayCells, false];
   };
 

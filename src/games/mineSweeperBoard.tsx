@@ -29,7 +29,7 @@ function Board({ cells, bombs, isRunning, lose, win, isReseting, triggers }: { c
       percentage = 0.65;
     } else {
       ocupatedSpace = cells * 10;
-      percentage = 0.35;
+      percentage = 0.40;
     }
     let newSize = ((width * percentage) - ocupatedSpace) / cells;
     changeSize(newSize);
@@ -38,7 +38,8 @@ function Board({ cells, bombs, isRunning, lose, win, isReseting, triggers }: { c
   // change the cells size based on the screen width
   useEffect(() => {
     window.addEventListener("resize", reSize);
-  });
+    reSize();
+  }, []);
 
   // click function
   const hasClicked = (cell: CellInterface, e: React.MouseEvent): void => {
@@ -125,12 +126,8 @@ function Board({ cells, bombs, isRunning, lose, win, isReseting, triggers }: { c
           }
         </div>
       </main>
-      <button onClick={ reSize } className="resize">
-        Resize
-      </button>
     </div>
   );
 }
 
 export default Board;
-
