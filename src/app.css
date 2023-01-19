@@ -1,0 +1,41 @@
+.title {
+  font-size: 72px;
+  background: -webkit-linear-gradient(rgb(21, 241, 105), rgb(34, 66, 107));
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 7%;
+}
+
+.play {
+  border: solid black 8px;
+  border-radius: 30px;
+  font-size: x-large;
+  font-style: italic;
+  margin: 20px;
+  padding: 15px 45px;
+  color: rgb(34, 66, 107);
+  background-color: rgb(21, 241, 105);
+  font-weight: 400;
+  transition: all 0.3s;
+  opacity: 0.8;
+  margin-top: 10%;
+}
+
+.play:hover {
+  font-size: xx-large;
+  border-radius: 20px 40px;
+  font-weight: 800;
+  border-color: green;
+  margin-top: 10% + 10px;
+  padding: 25px 60px;
+  transition: all 0.6s;
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-thickness: auto;
+}
+
+.mineSweeper {
+  transition: all 80s;
+  background-color: red;
+}

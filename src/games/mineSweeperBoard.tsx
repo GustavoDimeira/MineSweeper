@@ -2,7 +2,8 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 import { MineSweeperClass } from './utilits/mineSweeper.funcs';
 import { CellInterface } from './utilits/mineSweeper.interfaces';
-import './mineSweeperBoard.css';
+
+import './css/mineSweeperBoard.css';
 
 const {
   getCells, defineBombs, clickFunction,
@@ -21,12 +22,15 @@ function Board({ cells, bombs, isRunning, lose, win, isReseting, triggers }: { c
     if (width < 401) {
       ocupatedSpace = cells * 5;
       percentage = 0.85;
-    } else if (width < 551) {
+    } else if (width < 571) {
       ocupatedSpace = cells * 8;
       percentage = 0.85;
     } else if (width < 751) {
       ocupatedSpace = cells * 10;
       percentage = 0.65;
+    } else if (width < 900) {
+      ocupatedSpace = cells * 10;
+      percentage = 0.60;
     } else {
       ocupatedSpace = cells * 10;
       percentage = 0.40;
@@ -39,7 +43,8 @@ function Board({ cells, bombs, isRunning, lose, win, isReseting, triggers }: { c
   useEffect(() => {
     window.addEventListener("resize", reSize);
     reSize();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cells, bombs]);
 
   // click function
   const hasClicked = (cell: CellInterface, e: React.MouseEvent): void => {
@@ -53,7 +58,7 @@ function Board({ cells, bombs, isRunning, lose, win, isReseting, triggers }: { c
       changeCellsState(cellsArray);
       isRunning(true);
     };
-    const [newCells, trigger] = clickFunction(cell, cellsArray ? cellsArray : cellsState, cells, e);
+    const [newCells, trigger] = clickFunction(cell, cellsArray ?? cellsState, cells, e);
     changeCellsState(newCells);
     let openCount = 0;
     newCells.forEach((cell) => (cell.isOpen && !cell.hasBomb) && openCount++);

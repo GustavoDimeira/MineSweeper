@@ -1,11 +1,14 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Board from './mineSweeperBoard';
+import Config from './mineSweeperConfig';
 
-import './mineSweeperHeader.css';
+import './css/mineSweeperHeader.css';
 
 let interval: any;
 
 function MineSweeper() {
+  const [boardInfo, changeInfos] = useState<{ size: number, bombs: number }>({ size: 15, bombs: 40 });
+
   const [isRunning, startAndStop] = useState<boolean>(false);
   const [hasLoste, changeLose] = useState<boolean>(false);
   const [haswin, changeWin] = useState<boolean>(false);
@@ -13,7 +16,7 @@ function MineSweeper() {
 
   const [timer, updateTimer] = useState<number>(0);
   const [timerString, updateTimerString] = useState<string>("0:0");
-  const [winList, changeWinList] = useState<number[]>([]);
+  const [winList, changeWinList] = useState<string[]>([]);
 
   const [headerWidth, changeWidth] = useState<string>("0");
 
@@ -22,10 +25,12 @@ function MineSweeper() {
     let percentage: number = 0
     if (width < 401) {
       percentage = 0.85;
-    } else if (width < 551) {
+    } else if (width < 571) {
       percentage = 0.85;
     } else if (width < 751) {
       percentage = 0.65;
+    } else if (width < 900) {
+      percentage = 0.60;
     } else {
       percentage = 0.40;
     };
@@ -48,12 +53,15 @@ function MineSweeper() {
   useEffect(() => {
     if (haswin) {
       changeWinList((prev) => {
-        const order = [...prev, (timer / 10)];
+        const order = [...prev,
+          ((boardInfo.size === 10) ? "Easy: " : (boardInfo.size === 15) ? "Medium: " : "Hard: ") + timerString
+        ];
         return order.sort();
       });
     }
     const temp: string[] = (timer / 10).toString().split(".");
     updateTimerString(`${temp[0]}:${temp[1] ? temp[1] : 0}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [haswin, timer]);
 
   useEffect(() => {
@@ -63,7 +71,6 @@ function MineSweeper() {
       }, 100)
     } else {
       clearInterval(interval);
-
     }
   }, [isRunning]);
 
@@ -72,8 +79,7 @@ function MineSweeper() {
       <div className="header" style={{ "width": `${headerWidth}px` }}>
         <div>
           <select
-            defaultValue={"LeaderBoard"}
-            className={"leaderBoard"}
+            className= { "leaderBoard" }
           >
             <option
               key={-1}
@@ -83,9 +89,10 @@ function MineSweeper() {
             {winList.map((time, i): ReactNode => {
               return (
                 <option
-                  key={i}
+                  key={`temp-${i}`}
+                  className={`temp-${i} times`}
                 >
-                  {`${(time / 10).toString().split(".")[0]}:${(time / 10).toString().split(".")[1] ? Math.round((time / 10)).toString().split(".")[1] : 0}`}
+                  {`${time}`}
                 </option>
               )
             })}
@@ -106,18 +113,17 @@ function MineSweeper() {
           {`Timer: ${timerString}`}
         </p>
       </div>
-      {(haswin || hasLoste) && <div
-        className={`endGame ${haswin ? "win" : "lost"}`}
-      >
-        {
-          haswin ? (
-            <div>
-              "You Win!"
-            </div>
-          ) : hasLoste && "You Lose"
-        }
-      </div>}
-      <Board bombs={4} cells={8} isRunning={startAndStop} lose={changeLose} win={changeWin} isReseting={isResetarting} triggers={[haswin, hasLoste]} />
+      {
+        (haswin || hasLoste) && <div
+          className={`endGame ${haswin ? "win" : "lost"}`}
+        >
+          {
+            haswin ? "You Win!" : hasLoste && "You Lose"
+          }
+        </div>
+      }
+      <Config changeInfos={ changeInfos } width={ headerWidth } restart= { restart }/>
+      <Board bombs={boardInfo.bombs} cells={boardInfo.size} isRunning={startAndStop} lose={changeLose} win={changeWin} isReseting={isResetarting} triggers={[haswin, hasLoste]} />
     </main>
   );
 }

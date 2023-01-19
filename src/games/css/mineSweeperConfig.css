@@ -1,0 +1,31 @@
+.config {
+  background-color: #949aa7;
+  display: flex;
+  border-right: 12px black solid;
+  border-left: 12px black solid;
+  border-top: 4px rgb(0, 0, 0) solid;
+  box-shadow: 7px 7px 1px black inset;
+  box-shadow: 7px 7px 15px black;
+}
+
+label {
+  cursor: pointer;
+}
+
+form {
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+form button {
+  background-color: rgb(26, 62, 104);
+  border: solid 2px black;
+  border-radius: 8%;
+  color: white;
+  font-weight: bolder;
+  padding: 2px;
+  padding-bottom: 0px;
+  margin: 2px;
+}

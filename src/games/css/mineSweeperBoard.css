@@ -13,16 +13,17 @@
   border-style: inset;
   background-color: #000000;
   display: inline-block;
+  margin-bottom: 30px;
 }
 
 .cell {
+  transition: all 0.2s;
   border-radius: 15%;
   border-right: 6px solid rgb(32, 32, 32);
   border-bottom: 6px solid rgb(32, 32, 32);
   border-left: 4px solid rgb(167, 167, 167);
   border-top: 4px solid rgb(167, 167, 167);
   display: inline-flex;
-  background-color: rgb(56, 97, 121);
 }
 
 .line {
@@ -37,29 +38,31 @@
 
 .cell p {
   font-weight: 700;
-  font-size: medium;
+  font-size: 100%;
   position: absolute;
 }
 
 .closed:hover {
-  opacity: 0.65;
+  opacity: 0.55;
 }
 
-.colsed {
-  background-color: rgb(23, 71, 104);
+.closed {
+  cursor: cell;
+  background-color: rgb(56, 97, 121);
 }
 
 .open, .open-empty{
-  background-color: rgb(180, 164, 164);
+  background-color: rgb(182, 182, 182);
+  cursor: not-allowed;
 }
 
 .explod img {
   opacity: 1;
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 570px) {
   .cell p {
-    font-size: small;
+    font-size: 100%;
   }
 
   .cell {
@@ -72,7 +75,7 @@
 
 @media only screen and (max-width: 400px) {
   .cell p {
-    font-size: x-small;
+    font-size: 100%;
   }
 
   .cell {
@@ -84,5 +87,6 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 10px;
+  color: blueviolet;
 }

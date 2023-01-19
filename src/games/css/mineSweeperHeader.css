@@ -12,7 +12,7 @@
 
 .header {
   display: inline-flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: baseline;
   padding-top: 8px;
   padding-bottom: 14px;
@@ -26,22 +26,16 @@
   border-bottom: 0px;
 }
 
-.restart, .timer, .leaderBoard {
+.restart,
+.timer,
+.leaderBoard {
   background-color: rgb(26, 62, 104);
   border: solid 3px black;
   border-radius: 8%;
   color: white;
   font-weight: bolder;
-}
-
-.leaderBoard {
-  padding: 2px;
-  margin-left: 2%;
-}
-
-.timer {
-  padding: 2px;
-  margin-right: 8%;
+  padding: 3px;
+  cursor: pointer;
 }
 
 .text {
@@ -56,7 +50,7 @@
 }
 
 .endGame {
-  font-size: 60px;
+  font-size: 280%;
   position: absolute;
   z-index: 2;
 }
@@ -64,7 +58,7 @@
 .win {
   padding: 5px;
   background-image: linear-gradient(to bottom right, rgb(0, 255, 13), rgb(44, 107, 104));
-  
+
   border-radius: 15% 40%;
   border: solid rgb(0, 0, 0) 4px;
   box-shadow: 7px 7px 1px rgb(0, 255, 21) inset;
@@ -81,33 +75,66 @@
   box-shadow: 7px 7px 15px rgb(255, 0, 0);
 }
 
-.lost, .win {
-  -webkit-animation:2s ease 0s normal forwards 3 fadein;
-  animation:2s ease 0s normal forwards 3 fadein;
+.lost,
+.win {
+  -webkit-animation: 2s ease 0s normal forwards 3 fadein;
+  animation: 2s ease 0s normal forwards 3 fadein;
+}
+
+.times {
+  background: transparent;
+  opacity: 0.8;
+}
+
+.temp-0 {
+  background-color: gold;
+  opacity: 1;
+}
+
+.temp-1 {
+  background-color: silver;
+  opacity: 0.8;
+}
+
+.temp-2 {
+  background-color: #cd7f32;
+  opacity: 0.8;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
   }
-  
-  @keyframes fadein{from{opacity:0}
-  to{opacity:0.96}
+
+  to {
+    opacity: 0.96
   }
-  
-  @-webkit-keyframes fadein{from{opacity:0}
-  to{opacity:0.96}
+}
+
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0
   }
-  
+
+  to {
+    opacity: 0.96
+  }
+}
+
 
 @media only screen and (min-width: 551px) {
   .header {
     width: 65%;
-    font-family:'Times New Roman', Times, serif
+    font-family: 'Times New Roman', Times, serif
   }
 
   .endGame {
-    font-size: 75px;
+    font-size: 380%;
   }
 }
 
 @media only screen and (min-width: 700px) {
   .endGame {
-    font-size: 90px;
+    font-size: 500%;
   }
 }
