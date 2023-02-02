@@ -1,70 +1,27 @@
-# Getting Started with Create React App
+## How to iniciate the project
+1- open a directory in your terminal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+2- git clone https://github.com/GustavoDimeira/MineSweeper.git
 
-## Available Scripts
+3- npm install
 
-In the project directory, you can run:
+4- npm start
 
-### `npm start`
+5- enjoy the game
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## My first personal project, built in 10 days.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+During the time I was making the game I had seen my self against a lot of challenges, always needing to reinvent my self, finding creatives solutions to finish the project as god as it could be.
 
-### `npm test`
+## Featrues:
+º Optimizated functions, making the game run as fluid as possible.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+º A very sensitive resize function, able to rezise the board size in every dificulty, making so the board will always fit on the screen size.
 
-### `npm run build`
+° The game define the board's bombs after your first click, making so it will always be in an empty cell.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+º Over 150 code's line just for functions.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+º Developed on React, using TypeScript
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## This is one of many projects that I pretend to make for my portfolio.
