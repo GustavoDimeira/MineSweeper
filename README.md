@@ -1,17 +1,22 @@
-## How to iniciate the project
-1- open a directory in your terminal
+# MineSweeper
 
-2- git clone https://github.com/GustavoDimeira/MineSweeper.git
-
-3- npm install
-
-4- npm start
-
-5- enjoy the game
-
-## My first personal project, built in 10 days.
+<p>
+My first personal project, built in 10 days.
 
 During the time I was making the game I had seen my self against a lot of challenges, always needing to reinvent my self, finding creatives solutions to finish the project as god as it could be.
+<p/>
+
+## How to iniciate the project
+
+° open a directory in your terminal </br>
+° git clone https://github.com/GustavoDimeira/MineSweeper.git</br>
+° cd MineSweeper</br>
+° npm install</br>
+° npm start</br>
+
+## Technologies used
+
+TypeScript - React
 
 ## Featrues:
 º Optimizated functions, making the game run as fluid as possible.
